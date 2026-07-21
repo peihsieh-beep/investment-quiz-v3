@@ -967,6 +967,36 @@ h1,
   }
 }
 
+
+/* Download/share image top badge */
+.download-eyebrow{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 22px;
+  padding:10px 18px;
+  border:1px solid rgba(213,154,82,.42);
+  border-radius:999px;
+  background:rgba(126,18,28,.18);
+  color:#e8b875;
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:.08em;
+  line-height:1.2;
+  width:auto;
+  max-width:fit-content;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  text-align:center;
+}
+
+
+#downloadImageCard .download-eyebrow,
+#downloadShareCard .download-eyebrow,
+#downloadCard .download-eyebrow{
+  align-self:center;
+}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
@@ -1068,7 +1098,7 @@ h1,
   </main>
 
   <div id="downloadResultCard" class="download-result-card" aria-hidden="true">
-    <div class="download-kicker">PPA 投資行為鑑定所</div>
+    <div class="download-kicker download-eyebrow">PPA 投資行為鑑定所</div>
 
     <div class="download-result-heading">
       <div class="download-result-label">鑑定結果</div>
