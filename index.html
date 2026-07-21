@@ -695,7 +695,7 @@ h1,
   margin:0 auto 22px;
 }
 .result-tarot-image{
-  width:min(100%, 360px);
+  width:min(100%, 300px);
   aspect-ratio:2 / 3;
   object-fit:cover;
   border-radius:18px;
@@ -704,7 +704,7 @@ h1,
   background:#18130d;
 }
 @media (max-width:640px){
-  .result-tarot-image{width:min(100%, 300px);}
+  .result-tarot-image{width:min(100%, 250px);}
 }
 
 
@@ -858,10 +858,21 @@ h1,
 
 .download-result-solution{
   margin:0;
+  padding-left:30px;
   color:#eadfd3;
-  font-size:23px;
+  font-size:22px;
   font-weight:400;
-  line-height:1.7;
+  line-height:1.65;
+  text-align:left;
+}
+
+.download-result-solution li{
+  margin:6px 0;
+  padding-left:6px;
+}
+
+.download-result-solution li::marker{
+  color:#d8b27a;
 }
 
 .download-footer{
@@ -881,6 +892,55 @@ h1,
 
   .result-actions .btn{
     width:100%;
+  }
+}
+
+
+/* Result page solution */
+.result-solution-section{
+  width:min(100%, 660px);
+  margin:0 auto 22px;
+  padding:20px 24px;
+  text-align:left;
+  border:1px solid rgba(213,154,82,.22);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg,rgba(126,18,28,.08),transparent),
+    #140d0f;
+}
+
+.result-solution-section h3{
+  margin:0 0 12px;
+  color:#e7ba7d;
+  font-size:18px;
+  font-weight:600;
+  text-align:center;
+}
+
+.result-solution-list{
+  margin:0;
+  padding-left:24px;
+  color:#eadfd3;
+  font-size:15px;
+  line-height:1.75;
+}
+
+.result-solution-list li{
+  margin:7px 0;
+  padding-left:4px;
+}
+
+.result-solution-list li::marker{
+  color:#d8b27a;
+}
+
+@media (max-width:640px){
+  .result-solution-section{
+    padding:18px 18px;
+  }
+
+  .result-solution-list{
+    font-size:14px;
   }
 }
 
@@ -944,6 +1004,11 @@ h1,
     >
   </div>
 
+  <div class="result-solution-section">
+    <h3>你的解方</h3>
+    <ul id="resultSolutionList" class="result-solution-list"></ul>
+  </div>
+
   
 
 <div class="result-actions">
@@ -995,7 +1060,7 @@ h1,
 
     <div class="download-solution-wrap">
       <div class="download-solution-title">你的解方</div>
-      <p id="downloadResultSolution" class="download-result-solution"></p>
+      <ul id="downloadResultSolution" class="download-result-solution"></ul>
     </div>
 
     <div class="download-footer">你在股市是哪一種角色？</div>
@@ -1753,26 +1818,93 @@ const mixedDescs = {
 };
 
 
-const singleSolutions = {
-  "A": "先建立投資基本觀念，從看懂市場、風險與常見工具開始，不急著追熱門標的。",
-  "B": "強化資產配置與定期檢視方法，在穩健之外，也替組合保留適度成長空間。",
-  "C": "建立固定的研究框架，練習從財報、產業與估值收斂結論，避免研究很多卻遲遲無法決策。",
-  "D": "把進出場條件、停損與部位規則寫清楚，讓操作依照系統，而不是只靠當下反應。",
-  "E": "先補足選股依據與風險控管，設定加碼上限和停損條件，避免把攤平當成唯一策略。"
+const solutionRows = {
+  "A": {
+    "solution1": "先建立投資基本觀念",
+    "solution2": "從看懂市場、風險與常見工具開始",
+    "solution3": "不急著追熱門標的"
+  },
+  "B": {
+    "solution1": "強化資產配置方法",
+    "solution2": "建立定期檢視投資組合的習慣",
+    "solution3": "在穩健之外，保留適度成長空間"
+  },
+  "C": {
+    "solution1": "建立固定的研究框架",
+    "solution2": "從財報、產業與估值收斂結論",
+    "solution3": "避免研究很多，卻遲遲無法決策"
+  },
+  "D": {
+    "solution1": "寫清楚進出場條件",
+    "solution2": "設定停損與部位規則",
+    "solution3": "讓操作依照系統，而不是只靠當下反應"
+  },
+  "E": {
+    "solution1": "補足選股依據與風險控管",
+    "solution2": "設定加碼上限和停損條件",
+    "solution3": "避免把攤平當成唯一策略"
+  },
+  "AB": {
+    "solution1": "從低風險工具與基礎配置開始",
+    "solution2": "用小額實作累積經驗",
+    "solution3": "再逐步擴大投資範圍"
+  },
+  "AC": {
+    "solution1": "先建立基本面分析順序",
+    "solution2": "依序理解商業模式、財報與產業趨勢",
+    "solution3": "避免一開始就掉進資料海"
+  },
+  "AD": {
+    "solution1": "先學會辨認趨勢與支撐壓力",
+    "solution2": "理解每筆交易的風險報酬",
+    "solution3": "用模擬或小額交易練習，不要急著重押"
+  },
+  "AE": {
+    "solution1": "建立最基本的下單檢查表",
+    "solution2": "寫下買進理由與可以承受的最大虧損",
+    "solution3": "在進場前設定退場條件"
+  },
+  "BC": {
+    "solution1": "採取核心加衛星配置",
+    "solution2": "核心部位維持穩健",
+    "solution3": "衛星部位投入有研究基礎的成長標的"
+  },
+  "BD": {
+    "solution1": "建立明確的等待與出手條件",
+    "solution2": "搭配適當的部位控管",
+    "solution3": "避免因追求完美時機而錯過合理機會"
+  },
+  "BE": {
+    "solution1": "分開長期投資與短線娛樂資金",
+    "solution2": "限制高風險部位比例",
+    "solution3": "避免短線情緒破壞整體配置"
+  },
+  "CD": {
+    "solution1": "用基本面挑選標的",
+    "solution2": "用技術面掌握進出場時機",
+    "solution3": "事先定義什麼情況代表自己的判斷錯了"
+  },
+  "CE": {
+    "solution1": "建立反方檢查機制",
+    "solution2": "固定檢視原始投資假設是否失效",
+    "solution3": "避免只蒐集支持自己持股的資訊"
+  },
+  "DE": {
+    "solution1": "強制設定停損",
+    "solution2": "限制單筆最大虧損與每日交易上限",
+    "solution3": "先保住本金，再追求刺激與報酬"
+  }
 };
 
-const mixedSolutions = {
-  "AB": "從低風險工具與基礎配置開始，用小額實作累積經驗，再逐步擴大投資範圍。",
-  "AC": "先建立基本面分析順序，從商業模式、財報重點到產業趨勢，避免一開始就掉進資料海。",
-  "AD": "先學會辨認趨勢、支撐壓力與風險報酬，再用模擬或小額交易練習，不要急著重押。",
-  "AE": "先建立最基本的下單檢查表，包含買進理由、最大虧損與退場條件，降低衝動交易。",
-  "BC": "採取核心加衛星配置，核心維持穩健，衛星部位再投入有研究基礎的成長標的。",
-  "BD": "建立明確的等待與出手條件，搭配部位控管，避免因為追求完美時機而錯過合理機會。",
-  "BE": "把長期投資與短線娛樂資金分開，限制高風險部位比例，避免短線情緒破壞整體配置。",
-  "CD": "將基本面用來選標的、技術面用來抓時機，並事先定義何時證明自己看錯。",
-  "CE": "建立反方檢查機制，固定檢視原始假設是否失效，避免只蒐集支持自己持股的資訊。",
-  "DE": "強制設定停損、單筆最大虧損與每日交易上限，先保住本金，再追求刺激與報酬。"
-};
+function getSolutionItems(code){
+  const row = solutionRows[code] || {
+    solution1:"建立清楚的投資邏輯",
+    solution2:"設定風險邊界",
+    solution3:"逐步形成適合自己的方法"
+  };
+
+  return [row.solution1, row.solution2, row.solution3].filter(Boolean);
+}
 
 
 let current = 0;
@@ -1897,18 +2029,19 @@ function showResult(){
   const {ps,tags} = calculate();
   const ranked = Object.entries(ps).sort((a,b)=>b[1]-a[1]);
   const first = ranked[0], second = ranked[1];
-  let title, desc, solution;
+  let title, desc, resultCode;
 
   if(first[1] - second[1] <= 2){
-    const code = [first[0],second[0]].sort().join("");
-    title = mixedNames[code] || `${personas[first[0]].name} × ${personas[second[0]].name}`;
-    desc = mixedDescs[code] || `你同時帶有「${personas[first[0]].name}」和「${personas[second[0]].name}」的特質。`;
-    solution = mixedSolutions[code] || "先釐清你的買進邏輯、風險邊界與學習方向，讓投資不只靠感覺。";
+    resultCode = [first[0],second[0]].sort().join("");
+    title = mixedNames[resultCode] || `${personas[first[0]].name} × ${personas[second[0]].name}`;
+    desc = mixedDescs[resultCode] || `你同時帶有「${personas[first[0]].name}」和「${personas[second[0]].name}」的特質。`;
   }else{
+    resultCode = first[0];
     title = personas[first[0]].name;
     desc = personas[first[0]].desc;
-    solution = singleSolutions[first[0]] || "先建立更清楚的投資邏輯與風險控管，再逐步形成適合自己的方法。";
   }
+
+  const solution = getSolutionItems(resultCode);
 
   let courseRank = Object.entries(tags).sort((a,b)=>b[1]-a[1]);
 
@@ -1970,7 +2103,21 @@ function showResult(){
 
   document.getElementById("downloadResultTitle").textContent = `鑑定結果：${title}`;
   document.getElementById("downloadResultDesc").textContent = desc;
-  document.getElementById("downloadResultSolution").textContent = solution;
+  const resultSolutionList = document.getElementById("resultSolutionList");
+  const downloadSolutionList = document.getElementById("downloadResultSolution");
+
+  resultSolutionList.innerHTML = "";
+  downloadSolutionList.innerHTML = "";
+
+  solution.forEach(item => {
+    const resultLi = document.createElement("li");
+    resultLi.textContent = item;
+    resultSolutionList.appendChild(resultLi);
+
+    const downloadLi = document.createElement("li");
+    downloadLi.textContent = item;
+    downloadSolutionList.appendChild(downloadLi);
+  });
 
   const downloadImage = document.getElementById("downloadResultImage");
   downloadImage.src = imageUrl;
