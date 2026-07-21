@@ -1,0 +1,1765 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Noto+Serif+TC:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>你在股市是那一種狠角色？</title>
+  <style>
+
+    :root{
+      --bg:#12090b;
+      --panel:#1b1013;
+      --panel-2:#241317;
+      --text:#fff6ea;
+      --muted:#c0aaa3;
+      --line:rgba(255,220,180,.13);
+      --orange:#a51f27;
+      --orange-2:#d59a52;
+      --orange-soft:rgba(165,31,39,.14);
+      --cream:#fff2df;
+      --shadow:0 24px 70px rgba(0,0,0,.42);
+      --radius:26px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 18% 0%, rgba(126,18,28,.24), transparent 32%),
+        radial-gradient(circle at 82% 10%, rgba(213,154,82,.10), transparent 30%),
+        linear-gradient(180deg,#12090b 0%,#0d0809 100%);
+    }
+
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.22;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size:42px 42px;
+      mask-image:linear-gradient(to bottom,black,transparent 88%);
+    }
+
+    .wrap{
+      width:min(900px, calc(100% - 28px));
+      margin:0 auto;
+      padding:42px 0 64px;
+      position:relative;
+      z-index:1;
+    }
+
+    .hero{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 14px;
+      border:1px solid rgba(213,154,82,.42);
+      border-radius:999px;
+      background:rgba(126,18,28,.18);
+      color:#e8b875;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.08em;
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(42px,7vw,72px);
+      line-height:1.04;
+      letter-spacing:-.055em;
+      color:var(--cream);
+      text-shadow:0 8px 30px rgba(0,0,0,.48);
+    }
+
+    .hero p{
+      color:var(--muted);
+      margin:18px auto 0;
+      max-width:680px;
+      line-height:1.8;
+      font-size:17px;
+    }
+
+    .card{
+      position:relative;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.008)),
+        var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:32px;
+      overflow:hidden;
+      backdrop-filter:blur(16px);
+    }
+
+    .card:before{
+      content:"";
+      position:absolute;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:rgba(126,18,28,.20);
+      top:-85px;
+      right:-70px;
+      filter:blur(12px);
+    }
+
+    .progress-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:12px;
+      font-size:14px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .progress{
+      height:9px;
+      background:#0b0c0f;
+      border:1px solid var(--line);
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:30px;
+    }
+
+    .progress > span{
+      display:block;
+      height:100%;
+      width:10%;
+      background:linear-gradient(90deg,#8f1821,#d59a52);
+      border-radius:999px;
+      transition:width .25s ease;
+      box-shadow:0 0 18px rgba(143,24,33,.28);
+    }
+
+    .question{
+      font-size:clamp(25px,4vw,33px);
+      line-height:1.45;
+      margin:0 0 24px;
+      letter-spacing:-.025em;
+    }
+
+    .answers{
+      display:grid;
+      gap:12px;
+    }
+
+    .answer{
+      border:1px solid var(--line);
+      background:var(--panel-2);
+      border-radius:16px;
+      padding:18px 19px;
+      font-size:16px;
+      line-height:1.65;
+      text-align:left;
+      cursor:pointer;
+      transition:.18s ease;
+      color:var(--text);
+      box-shadow:none;
+    }
+
+    .answer:hover{
+      border-color:rgba(213,154,82,.52);
+      background:#2a171b;
+      transform:translateY(-2px);
+    }
+
+    .answer.selected{
+      border-color:#d59a52;
+      background:rgba(126,18,28,.20);
+      box-shadow:0 0 0 3px rgba(213,154,82,.10);
+    }
+
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:space-between;
+      margin-top:28px;
+    }
+
+    button{font:inherit}
+
+    .btn{
+      border:0;
+      border-radius:14px;
+      padding:13px 20px;
+      cursor:pointer;
+      font-weight:850;
+      transition:.18s ease;
+    }
+
+    .btn-secondary{
+      background:#24272d;
+      color:#e7e1db;
+      border:1px solid var(--line);
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#8f1821,#b52b31);
+      color:#fff;
+      margin-left:auto;
+      box-shadow:0 10px 24px rgba(90,8,15,.34);
+    }
+
+    .btn:disabled{
+      opacity:.35;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .btn:not(:disabled):hover{
+      transform:translateY(-2px);
+    }
+
+    .hidden{display:none !important}
+
+    .start{
+      text-align:center;
+      padding:48px 32px;
+    }
+
+    .start .icons{
+      font-size:44px;
+      letter-spacing:12px;
+      margin-bottom:18px;
+      filter:drop-shadow(0 8px 18px rgba(0,0,0,.25));
+    }
+
+    .start h2,.result h2{
+      font-size:clamp(30px,5vw,44px);
+      margin:0 0 14px;
+      letter-spacing:-.035em;
+    }
+
+    .start p{
+      color:var(--muted);
+      line-height:1.8;
+      margin:0 auto 28px;
+      max-width:580px;
+    }
+
+    .result{
+      text-align:center;
+    }
+.result-desc{
+      color:var(--muted);
+      max-width:660px;
+      margin:0 auto 26px;
+      line-height:1.85;
+      font-size:16px;
+    }
+
+    .section{
+      text-align:left;
+      background:#111318;
+      border:1px solid var(--line);
+      padding:20px;
+      border-radius:18px;
+      margin-top:18px;
+    }
+
+    .section h3{
+      margin:0 0 12px;
+      font-size:18px;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+    }
+
+    .tag{
+      padding:9px 12px;
+      border-radius:999px;
+      background:rgba(126,18,28,.18);
+      border:1px solid rgba(213,154,82,.28);
+      font-size:14px;
+      font-weight:750;
+      color:#e7ba7d;
+    }
+
+    .recommend-title{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .recommend-title h3{margin:0;font-size:21px}
+    .recommend-title span{font-size:13px;color:var(--muted)}
+
+    .course-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:14px;
+      text-align:left;
+    }
+
+    .course-card{
+      position:relative;
+      background:#171a20;
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      transition:.18s ease;
+      box-shadow:none;
+    }
+
+    .course-card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(213,154,82,.42);
+    }
+
+    .course-cover{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      background:#eef1f5;
+      display:block;
+      filter:saturate(.94) contrast(1.03);
+    }
+
+    .course-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+    }
+
+    .course-title{
+      font-weight:850;
+      line-height:1.45;
+      font-size:16px;
+      margin:0 0 8px;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    .course-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.65;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    .course-categories{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:10px;
+    }
+
+    .course-category{
+      font-size:12px;
+      font-weight:750;
+      color:#e7ba7d;
+      background:rgba(126,18,28,.18);
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,106,0,.22);
+    }
+
+    .course-link{
+      margin-top:auto;
+      padding-top:14px;
+      color:#fff;
+      background:linear-gradient(135deg,#8f1821,#b52b31);
+      border-radius:11px;
+      display:block;
+      padding:11px 12px;
+      text-align:center;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:850;
+      border:0;
+      box-shadow:none;
+    }
+.course-card.revealed
+h1,
+    .start h2,
+    .result h2,
+    .question{
+      font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+      font-weight:800;
+    }
+
+    h1{
+      letter-spacing:-.035em;
+    }
+
+    .question{
+      letter-spacing:-.015em;
+    }
+
+    .result h2{
+      line-height:1.35;
+    }
+
+
+    body.curtain-lock{
+      overflow:hidden;
+    }
+
+    .curtain-intro{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background:#0d0708;
+      transition:opacity .45s ease, visibility .45s ease;
+    }
+
+    .curtain-intro.opened{
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+
+    .curtain-panel{
+      position:absolute;
+      top:0;
+      bottom:0;
+      width:52%;
+      z-index:2;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          #3d070d 0,
+          #5a0d15 7%,
+          #2a0509 14%,
+          #67101a 21%,
+          #35070b 28%
+        );
+      box-shadow:inset 0 0 80px rgba(0,0,0,.55);
+      transition:transform 1.15s cubic-bezier(.7,0,.2,1);
+    }
+
+    .curtain-panel:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg,rgba(255,255,255,.07),transparent 20%,rgba(0,0,0,.18) 65%,transparent);
+      mix-blend-mode:screen;
+      opacity:.55;
+    }
+
+    .curtain-left{
+      left:0;
+      border-right:2px solid rgba(214,178,118,.38);
+      transform-origin:left center;
+    }
+
+    .curtain-right{
+      right:0;
+      border-left:2px solid rgba(214,178,118,.38);
+      transform-origin:right center;
+    }
+
+    .curtain-intro.opening .curtain-left{
+      transform:translateX(-102%);
+    }
+
+    .curtain-intro.opening .curtain-right{
+      transform:translateX(102%);
+    }
+
+    .curtain-top{
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:84px;
+      z-index:4;
+      background:
+        radial-gradient(ellipse at 8% 0%,#641019 0 32%,transparent 34%),
+        radial-gradient(ellipse at 24% 0%,#461018 0 32%,transparent 34%),
+        radial-gradient(ellipse at 40% 0%,#641019 0 32%,transparent 34%),
+        radial-gradient(ellipse at 56% 0%,#461018 0 32%,transparent 34%),
+        radial-gradient(ellipse at 72% 0%,#641019 0 32%,transparent 34%),
+        radial-gradient(ellipse at 88% 0%,#461018 0 32%,transparent 34%),
+        linear-gradient(#561019,#2b070b);
+      border-bottom:2px solid rgba(214,178,118,.42);
+      box-shadow:0 8px 30px rgba(0,0,0,.45);
+    }
+
+    .curtain-center{
+      position:relative;
+      z-index:5;
+      width:min(680px,calc(100% - 40px));
+      text-align:center;
+      padding:34px 28px 32px;
+      border:1px solid rgba(212,180,131,.28);
+      border-radius:28px;
+      background:rgba(19,10,12,.72);
+      backdrop-filter:blur(8px);
+      box-shadow:0 26px 80px rgba(0,0,0,.45);
+      transition:opacity .35s ease, transform .35s ease;
+    }
+
+    .curtain-intro.opening .curtain-center{
+      opacity:0;
+      transform:scale(.97);
+    }
+
+    .curtain-seal{
+      width:72px;
+      height:72px;
+      margin:0 auto 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      border:1px solid rgba(255,212,151,.55);
+      background:
+        radial-gradient(circle at 35% 25%,#ffcf86,#c9822f 55%,#7c4315);
+      color:#2b1208;
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:.12em;
+      box-shadow:0 0 36px rgba(255,153,51,.22);
+    }
+
+    .curtain-kicker{
+      margin-bottom:12px;
+      color:#d8b27a;
+      font-size:13px;
+      font-weight:800;
+      letter-spacing:.22em;
+    }
+
+
+    .curtain-kicker-only{
+      margin-top:4px;
+      margin-bottom:16px;
+      font-size:14px;
+    }
+
+    .curtain-title{
+      margin:0;
+      font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+      font-size:clamp(38px,7vw,68px);
+      line-height:1.15;
+      letter-spacing:-.04em;
+      color:#f6ead9;
+      text-shadow:0 8px 28px rgba(0,0,0,.5);
+    }
+
+    .curtain-copy{
+      margin:18px auto 0;
+      color:#d3c0b1;
+      font-size:16px;
+      line-height:1.8;
+    }
+
+    .curtain-btn{
+      margin-top:26px;
+      border:1px solid rgba(212,180,131,.45);
+      border-radius:999px;
+      padding:13px 22px;
+      cursor:pointer;
+      background:linear-gradient(135deg,#7a1620,#4b0b12);
+      color:#f6ead9;
+      font-size:15px;
+      font-weight:850;
+      letter-spacing:.06em;
+      box-shadow:0 12px 32px rgba(0,0,0,.32);
+      transition:.18s ease;
+    }
+
+    .curtain-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 38px rgba(0,0,0,.4);
+      border-color:#d8b27a;
+    }
+
+
+    .hero:before{
+      content:"CONFIDENTIAL ASSESSMENT";
+      display:block;
+      margin-bottom:10px;
+      color:rgba(213,154,82,.58);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.22em;
+    }
+
+    .card{
+      outline:1px solid rgba(213,154,82,.05);
+      outline-offset:-8px;
+    }
+
+    .card:after{
+      content:"";
+      position:absolute;
+      inset:12px;
+      pointer-events:none;
+      border:1px solid rgba(213,154,82,.06);
+      border-radius:18px;
+    }
+
+    .start .icons{
+      opacity:.88;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));
+    }
+
+    .section{
+      background:
+        linear-gradient(180deg,rgba(126,18,28,.07),transparent),
+        #140d0f;
+    }
+
+    @media (max-width:600px){
+      .curtain-top{height:64px}
+      .curtain-center{
+        padding:28px 20px 26px;
+      }
+      .curtain-seal{
+        width:62px;
+        height:62px;
+        font-size:17px;
+      }
+      .curtain-copy{
+        font-size:15px;
+      }
+    }
+
+    @media (max-width:600px){
+      .wrap{width:min(100% - 18px,900px);padding-top:22px}
+      .card{padding:21px}
+      .question{font-size:22px}
+      .course-grid{grid-template-columns:1fr}
+      .controls{gap:8px}
+      .btn{padding:12px 14px}
+.recommend-title{align-items:flex-start;flex-direction:column}
+      .start .icons{font-size:36px;letter-spacing:8px}
+    }
+
+  
+/* Readability refinement */
+.question-title,
+.option-btn,
+.option-text {
+  font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+.option-btn {
+  font-weight: 600;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+}
+
+.question-title {
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+
+/* Tarot result card */
+.result-tarot-wrap{
+  display:flex;
+  justify-content:center;
+  margin:0 auto 22px;
+}
+.result-tarot-image{
+  width:min(100%, 360px);
+  aspect-ratio:2 / 3;
+  object-fit:cover;
+  border-radius:18px;
+  border:1px solid rgba(213,154,82,.52);
+  box-shadow:0 22px 48px rgba(0,0,0,.42);
+  background:#18130d;
+}
+@media (max-width:640px){
+  .result-tarot-image{width:min(100%, 300px);}
+}
+
+</style>
+</head>
+<body class="curtain-lock">
+
+  <div id="curtainIntro" class="curtain-intro" aria-label="股市角色鑑定所開場">
+    <div class="curtain-top"></div>
+    <div class="curtain-panel curtain-left"></div>
+    <div class="curtain-panel curtain-right"></div>
+
+    <div class="curtain-center">
+      <div class="curtain-kicker curtain-kicker-only">投資行為鑑定所</div>
+      <h1 class="curtain-title">你在股市是哪一種狠角色？</h1>
+      <p class="curtain-copy">紅幕之後，會揭露你真正的市場本能。</p>
+      <button class="curtain-btn" onclick="openCurtain()">拉開布幕，接受鑑定</button>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <header class="hero">
+      <div class="eyebrow">投資行為鑑定所・受測區</div>
+      <h1>你在股市是那一種角色？</h1>
+      <p>用 10 題看看你究竟是在投資、做研究，還是在用錢玩大型線上遊戲🔥</p>
+    </header>
+
+    <section id="startScreen" class="card start hidden">
+      <div class="icons">🌱 📈 🔥 ⚡ 🐶</div>
+      <h2>準備好面對真實的自己了嗎？</h2>
+      <p>沒有標準答案，只有你平常嘴上說的，跟你真的做的</p>
+      <button class="btn btn-primary" onclick="startQuiz()">開始公開處刑</button>
+    </section>
+
+    <section id="quizScreen" class="card hidden">
+      <div class="progress-head">
+        <span id="counter">第 1 題，共 10 題</span>
+        <span id="percent">10%</span>
+      </div>
+      <div class="progress"><span id="progressBar"></span></div>
+      <h2 id="questionText" class="question"></h2>
+      <div id="answers" class="answers"></div>
+      <div class="controls">
+        <button id="prevBtn" class="btn btn-secondary" onclick="prevQuestion()">上一題</button>
+        <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()" disabled>下一題</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="card result hidden">
+      <div class="result-tarot-wrap">
+        <img id="resultTarotImage" class="result-tarot-image" src="" alt="投資人格塔羅牌">
+      </div>
+      <h2 id="resultTitle"></h2>
+      <p id="resultDesc" class="result-desc"></p>
+
+      <div class="section">
+        <h3>你的腦袋比較缺這幾塊</h3>
+        <div id="courseTags" class="tags"></div>
+      </div>
+
+      <div class="section">
+        <div class="recommend-title">
+          <h3>系統覺得你還有救，先看這些</h3>
+          <span>不是通靈，是真的有算</span>
+        </div>
+        <div id="courseGrid" class="course-grid"></div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:22px" onclick="restartQuiz()">不服？再測一次</button>
+    </section>
+  </main>
+
+<script>
+const courses = [
+  {
+    "title": "權證小哥的交易筆記本",
+    "categories": [
+      "籌碼分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project_introduce_square/20201005/F9164A8A731A39E2B269E6F6FF183C9E/5f7a8edb14358F9164A8A731A39E2B269E6F6FF183C9E20201005111123.jpg",
+    "url": "https://www.pressplay.cc/project/ED4E52D5B7157BF2E7BE3267FCE16238/about",
+    "description": "從籌碼變化與市場資金動向切入，協助你掌握主力布局與交易節奏，建立更有依據的進出場判斷。"
+  },
+  {
+    "title": "Wantgo旺大財經筆記-股市教學基地",
+    "categories": [
+      "產業分析",
+      "總體經濟"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/590FCE5CECE6FCC83C7356C0B098C32D/project_image_square/20210203/ACD59AC66CC158620388464C0F4A7FA9/6019d499945aeACD59AC66CC158620388464C0F4A7FA920210203063921.png",
+    "url": "https://www.pressplay.cc/project/590FCE5CECE6FCC83C7356C0B098C32D/about",
+    "description": "結合產業趨勢與總體經濟觀察，帶你看懂市場背後的驅動因素，建立更完整的投資視野。"
+  },
+  {
+    "title": "小朋友學投資｜台美股提款清單：帶你真正看懂主流",
+    "categories": [
+      "產業分析",
+      "盤勢分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/E0650DB99E64B4F80050F1C17A974BC3/project_image_square/20251223/DEF45A33F6890A20B21142788E70304F/694a2889595a9DEF45A33F6890A20B21142788E70304F20251223132841.png",
+    "url": "https://www.pressplay.cc/project/E0650DB99E64B4F80050F1C17A974BC3/about",
+    "description": "聚焦台美股熱門產業與市場主流，協助你掌握資金方向，找到值得持續追蹤的投資機會。"
+  },
+  {
+    "title": "給通勤族的飆股報告書 - 點石成金 飆股輕鬆入袋",
+    "categories": [
+      "盤勢分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/347C51645A9ACC61B0887301C9814177/project_image_square/20240725/E2CBDAF05DB4FD5F5E712F45C7A021B5/66a21b8643634E2CBDAF05DB4FD5F5E712F45C7A021B520240725173150.jpg",
+    "url": "https://www.pressplay.cc/project/347C51645A9ACC61B0887301C9814177/about",
+    "description": "用精簡易讀的方式整理盤勢與強勢標的，適合想利用零碎時間快速掌握市場機會的投資人。"
+  },
+  {
+    "title": "股市同學會-肌肉書僮：選股邏輯、投資觀念 / 用肌肉記憶學習投資",
+    "categories": [
+      "產業分析",
+      "技術分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/094811103C1EB49711DDD51AEB0DAAAC/project_image_square/20220715/5D59169F04CF40D29246E24D6CC02F44/62d13b02c94205D59169F04CF40D29246E24D6CC02F4420220715180138.png",
+    "url": "https://www.pressplay.cc/project/094811103C1EB49711DDD51AEB0DAAAC/about",
+    "description": "從產業邏輯到技術判讀，帶你反覆練習選股思維，逐步建立能實際運用的投資方法。"
+  },
+  {
+    "title": "無聊詹 技籌選股班－技籌邏輯與觀念教學",
+    "categories": [
+      "籌碼分析",
+      "技術分析"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/F3F6A774647169B95C1E2C6B613BCDC3/project_image_square/20241211/793CFDA27A7C1DD22035EF2771EA1D49/6758fc8198e5d793CFDA27A7C1DD22035EF2771EA1D4920241211104417.jpg",
+    "url": "https://www.pressplay.cc/project/3752FA4AE4D7B84E1090BD5AF21A833B/about",
+    "description": "結合技術面與籌碼面，拆解選股與進出場邏輯，幫助你建立更清楚的交易判斷框架。"
+  },
+  {
+    "title": "誠實價量｜培養成功投資思維",
+    "categories": [
+      "其他投資理財學習",
+      "技術分析"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/3752FA4AE4D7B84E1090BD5AF21A833B/project_image_square/20241208/75F5ABEC0405AEC4825F433863146437/6755907460f6775F5ABEC0405AEC4825F43386314643720241208202628.jpg",
+    "url": "https://www.pressplay.cc/project/486FF42F3707EF327074AC136F3CA819/about",
+    "description": "從價量變化與投資觀念出發，協助你理解市場訊號，培養更穩定且有紀律的投資思維。"
+  },
+  {
+    "title": "趨勢題材+族群金流+籌碼筆記=交易思維",
+    "categories": [
+      "盤勢分析",
+      "當沖"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/486FF42F3707EF327074AC136F3CA819/project_image_square/20240308/1CF1BEB2674D8626E922996F1A33E3C3/65eaabc19eccb1CF1BEB2674D8626E922996F1A33E3C320240308141009.png",
+    "url": "https://www.pressplay.cc/project/8577FEDCFBCCBD212F57CA4D32E54820/about",
+    "description": "整合趨勢題材、族群輪動與短線資金流向，幫助你快速掌握盤面重點與交易機會。"
+  },
+  {
+    "title": "投資癮交易世界 | 找到屬於自己的投資遊戲",
+    "categories": [
+      "產業分析",
+      "籌碼分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project_introduce_square/20201118/051AEC05570A1DBB7711918B7214284D/5fb470a3ec06d051AEC05570A1DBB7711918B7214284D20201118085355.jpg",
+    "url": "https://www.pressplay.cc/project/D55998EF82FC40F5E5DF852893BD639B/about",
+    "description": "從產業研究與籌碼觀察出發，帶你理解市場運作方式，逐步找到適合自己的投資節奏。"
+  },
+  {
+    "title": "台股開麥拉-從0到1的高手養成術",
+    "categories": [
+      "籌碼分析",
+      "技術分析"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/12A4DC1627209BE5206F3D0B082D4208/project_image_square/20231101/BEFF90BE55236C148DA7331FD261ACB5/6541c13eb7b45BEFF90BE55236C148DA7331FD261ACB520231101110846.png",
+    "url": "https://www.pressplay.cc/project/12A4DC1627209BE5206F3D0B082D4208/about",
+    "description": "從基礎觀念一路延伸到技術與籌碼分析，適合想系統化建立台股實戰能力的投資人。"
+  },
+  {
+    "title": "Frankの股市筆記｜現股、權證、台指期",
+    "categories": [
+      "技術分析",
+      "期貨選擇權"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/80B62BC940D0E2C916375E88EED5F2E0/project_image_square/20240125/7591AF697688844B0721DF11E6AA34D9/65b2246c91c357591AF697688844B0721DF11E6AA34D920240125170548.png",
+    "url": "https://www.pressplay.cc/project/80B62BC940D0E2C916375E88EED5F2E0/about",
+    "description": "涵蓋現股、權證與台指期操作，結合技術分析與交易策略，協助你掌握不同工具的實戰應用。"
+  },
+  {
+    "title": "籌碼小宇｜掌握大戶偷偷布局的關鍵籌碼",
+    "categories": [
+      "籌碼分析",
+      "技術分析"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/B1519C9EA65F5B32C83763DAD1E19759/project_image_square/20241016/B8EF32BAA4F378E25F86559BBED65C71/670fa3b9459f1B8EF32BAA4F378E25F86559BBED65C7120241016193001.png",
+    "url": "https://www.pressplay.cc/project/B1519C9EA65F5B32C83763DAD1E19759/about",
+    "description": "追蹤大戶與法人資金動向，搭配技術面判讀，幫助你提早發現市場布局與轉折訊號。"
+  },
+  {
+    "title": "畢德歐夫美股投資與全球專業導航",
+    "categories": [
+      "美股投資"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project_introduce_square/20201005/F9164A8A731A39E2B269E6F6FF183C9E/5f7a94534688eF9164A8A731A39E2B269E6F6FF183C9E20201005113443.jpg",
+    "url": "https://www.pressplay.cc/project/4A3C1480068391B8573BD8DD9E0042AC/about",
+    "description": "從全球市場與美股趨勢出發，整理重要產業與投資觀點，協助你掌握海外市場機會。"
+  },
+  {
+    "title": "股魚偷偷挖 - 潛力股機密筆記",
+    "categories": [
+      "ETF",
+      "價值投資"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/270DA7E7A870EDAE6D452EE929843CB3/project_image_square/20230501/1E922AC8D01AD10ECED2859ADAFC416C/644f964942c4f1E922AC8D01AD10ECED2859ADAFC416C20230501183657.png",
+    "url": "https://www.pressplay.cc/project/270DA7E7A870EDAE6D452EE929843CB3/about",
+    "description": "結合價值投資與資產配置觀念，挖掘具備長期潛力的標的，適合重視基本面與穩健累積的投資人。"
+  },
+  {
+    "title": "麥克連的籌碼交易視鏡",
+    "categories": [
+      "盤勢分析",
+      "籌碼分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/0454B6DBF7DDE84F91AADE2A7C8D6856/project_image_square/20210608/BEFF90BE55236C148DA7331FD261ACB5/60bed579e41c2BEFF90BE55236C148DA7331FD261ACB520210608102705.png",
+    "url": "https://www.pressplay.cc/project/0454B6DBF7DDE84F91AADE2A7C8D6856/about",
+    "description": "透過籌碼變化與盤勢觀察，掌握市場資金流向，協助你提升選股與交易時機的判斷力。"
+  },
+  {
+    "title": "85克日內波籌碼當沖",
+    "categories": [
+      "當沖"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/1002F3D338218A43A3A65E8D2A80376F/project_image_square/20230228/F469EBEBAA2B2CD38847F877A866BA71/63fdd18f655d3F469EBEBAA2B2CD38847F877A866BA7120230228180359.png",
+    "url": "https://www.pressplay.cc/project/1002F3D338218A43A3A65E8D2A80376F/about",
+    "description": "聚焦日內波動與籌碼變化，提供當沖交易的觀察方法，適合希望掌握短線節奏的投資人。"
+  },
+  {
+    "title": "沛沛從股製金 - 波段淘金術",
+    "categories": [
+      "產業分析",
+      "盤勢分析"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/49BA88F830DE1F56C942E6FBF49951F1/project_image_square/20260517/9D6EEB5AA716228D5052EDC9AA348D76/6a08b1622408f9D6EEB5AA716228D5052EDC9AA348D7620260517020314.png",
+    "url": "https://www.pressplay.cc/project/49BA88F830DE1F56C942E6FBF49951F1/about",
+    "description": "結合產業趨勢與盤勢判讀，尋找適合波段操作的市場機會，建立更有節奏的選股方法。"
+  },
+  {
+    "title": "林家洋：K線軌跡",
+    "categories": [
+      "技術分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project_introduce_square/20201005/F9164A8A731A39E2B269E6F6FF183C9E/5f7a915156fabF9164A8A731A39E2B269E6F6FF183C9E20201005112153.jpg",
+    "url": "https://www.pressplay.cc/project/5B179790E0104DF331354D7DCFAB57AE/about",
+    "description": "從 K 線與價格軌跡理解市場行為，帶你建立技術分析基礎，提升進出場判斷能力。"
+  },
+  {
+    "title": "掌握趨勢 抓住獲利",
+    "categories": [
+      "盤勢分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/AAB69B7A7926FC89877D8774F19E3B1D/project_image_square/20210226/BEFF90BE55236C148DA7331FD261ACB5/6038aba323500BEFF90BE55236C148DA7331FD261ACB520210226160451.png",
+    "url": "https://www.pressplay.cc/project/AAB69B7A7926FC89877D8774F19E3B1D/about",
+    "description": "聚焦市場趨勢與盤勢方向，協助你抓住行情重點，建立順勢而為的投資策略。"
+  },
+  {
+    "title": "淡定看台指-籌碼學",
+    "categories": [
+      "盤勢分析",
+      "籌碼分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/391E604492CAABC345DC03B2B0FE332F/project_image/20210905/F4B331212C3898BA56858F86BB7F898A/61345925413c8F4B331212C3898BA56858F86BB7F898A20210905134405.png",
+    "url": "https://www.pressplay.cc/project/391E604492CAABC345DC03B2B0FE332F/about",
+    "description": "透過台指與籌碼資料觀察市場多空變化，幫助你更冷靜地掌握盤勢方向與關鍵訊號。"
+  },
+  {
+    "title": "股市小黑：專挑聽話好股票，分散佈局，安心獲利。",
+    "categories": [
+      "盤勢分析",
+      "價值投資"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/06C118B16D26DA790E71D7F09501FCC3/project_image_square/20260601/CDFBC712A51E3F3E8190CE8C5D365E4E/6a1d4c28dc863CDFBC712A51E3F3E8190CE8C5D365E4E20260601170856.png",
+    "url": "https://www.pressplay.cc/project/06C118B16D26DA790E71D7F09501FCC3/about",
+    "description": "結合價值選股與分散布局，尋找具備穩定條件的好公司，適合重視風險與長期累積的投資人。"
+  },
+  {
+    "title": "柴寶窩 - 柴克台股實戰",
+    "categories": [
+      "盤勢分析",
+      "技術分析"
+    ],
+    "image": "https://static.pressplay.cc/static/uploads/project/8DBABB0CCF0952965418D0C18EE15B6F/project_image_square/20241118/8FB7A4CF3A725EF02ACAA7B149B71D40/673b0da61194a8FB7A4CF3A725EF02ACAA7B149B71D4020241118174926.jpg",
+    "url": "https://www.pressplay.cc/project/8DBABB0CCF0952965418D0C18EE15B6F/about",
+    "description": "從盤勢到技術分析，拆解台股實戰操作與市場節奏，幫助你提升選股與進出場能力。"
+  },
+  {
+    "title": "王伯達觀點 | 你的總體經濟顧問",
+    "categories": [
+      "ETF",
+      "總體經濟"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project_introduce_square/20201005/F9164A8A731A39E2B269E6F6FF183C9E/5f7a8f6659d22F9164A8A731A39E2B269E6F6FF183C9E20201005111342.jpg",
+    "url": "https://www.pressplay.cc/project/8D293258ED2B35E88A11601ED83B5675/about",
+    "description": "從總體經濟、利率與市場趨勢出發，協助你理解大環境變化，做出更有依據的資產配置決策。"
+  },
+  {
+    "title": "【丹尼波段研究社】| 股市●總經●產業●教學秘笈",
+    "categories": [
+      "技術分析",
+      "價值投資"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/4EA0B4A23172AF541FA360255DA10FD4/project_image_square/20260526/AD1757A1DD49F8FDF52DF75D1C6E3D69/6a156ec77669cAD1757A1DD49F8FDF52DF75D1C6E3D6920260526175831.png",
+    "url": "https://www.pressplay.cc/project/4EA0B4A23172AF541FA360255DA10FD4/about",
+    "description": "整合技術分析、產業趨勢與基本面觀察，提供波段選股與市場判讀的完整學習架構。"
+  },
+  {
+    "title": "美股投資學-高速成長與穩健收息",
+    "categories": [
+      "美股投資",
+      "ETF"
+    ],
+    "image": "https://www.pressplay.cc/static/uploads/project/FC7BD1F5522F909AFDA08A4198393B1B/project_image_square/20260601/CDFBC712A51E3F3E8190CE8C5D365E4E/6a1d40dc4010aCDFBC712A51E3F3E8190CE8C5D365E4E20260601162044.png",
+    "url": "https://www.pressplay.cc/project/FC7BD1F5522F909AFDA08A4198393B1B/about",
+    "description": "同時關注美股成長機會與穩健收息策略，適合想兼顧資本增值與長期現金流的投資人。"
+  }
+];
+
+const questions = [
+  {
+    "q": "朋友在群組丟一句：「這支明天一定噴」你會？",
+    "options": [
+      {
+        "t": "先問公司做什麼，不想再買熱門但看不懂的公司",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "先看它會不會干擾到現在的配置，風險要顧好",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "開始找公司財報、產業新聞，我要查到它祖譜",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "美股投資"
+        ]
+      },
+      {
+        "t": "嘴巴說冷靜，但手已經打開下單頁",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "籌碼分析"
+        ]
+      },
+      {
+        "t": "先上車再說，寧可買錯也不可錯過",
+        "p": "E",
+        "tags": [
+          "盤勢分析",
+          "當沖"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "突然多了 20 萬元，你第一個念頭是？",
+    "options": [
+      {
+        "t": "先放著不動，我連自己在幹嘛都還沒搞懂",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "其他投資理財"
+        ]
+      },
+      {
+        "t": "分批丟進 ETF 或長期標的，至少晚上睡得著",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "房地產"
+        ]
+      },
+      {
+        "t": "挑幾家公司慢慢研究，想辦法把 20 萬養大",
+        "p": "C",
+        "tags": [
+          "價值投資",
+          "產業分析"
+        ]
+      },
+      {
+        "t": "先留著等好價位，市場總會自己露出破綻",
+        "p": "D",
+        "tags": [
+          "盤勢分析",
+          "技術分析"
+        ]
+      },
+      {
+        "t": "先挑一支最有感覺的，人生偶爾就是要有點刺激",
+        "p": "E",
+        "tags": [
+          "當沖",
+          "其他投資理財"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "你關注很久的股票突然一天大漲 10%，你會？",
+    "options": [
+      {
+        "t": "看著它飛走，然後開始懷疑自己不適合投資",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "盤勢分析"
+        ]
+      },
+      {
+        "t": "沒在計畫裡的不追，假裝內心毫無波瀾",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "先研究它是真的變強，還是大家一起發瘋",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "美股投資"
+        ]
+      },
+      {
+        "t": "立刻看量價籌碼，找能不能順勢切入",
+        "p": "D",
+        "tags": [
+          "籌碼分析",
+          "技術分析"
+        ]
+      },
+      {
+        "t": "都漲 10% 了，代表市場認證過，先上車再說！",
+        "p": "E",
+        "tags": [
+          "盤勢分析",
+          "當沖"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "股票跌了 20%，你最可能怎麼做？",
+    "options": [
+      {
+        "t": "先問親朋好友，現在到底該跑還是蓋牌？",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "其他投資理財"
+        ]
+      },
+      {
+        "t": "看原訂計劃是否可以加碼，但不把身家丟下去",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "再研究一次基本面，確認方向後才考慮加碼",
+        "p": "C",
+        "tags": [
+          "價值投資",
+          "產業分析"
+        ]
+      },
+      {
+        "t": "到停損點該砍就砍，我不跟股票談感情",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "籌碼分析"
+        ]
+      },
+      {
+        "t": "跌 20% 等於打八折，先補一張攤平！",
+        "p": "E",
+        "tags": [
+          "當沖",
+          "技術分析"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "市場突然大跌，你最想先知道什麼？",
+    "options": [
+      {
+        "t": "打開電視、社群看誰能告訴我發生什麼事",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "盤勢分析"
+        ]
+      },
+      {
+        "t": "我的配置會不會一次畢業？",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "總體經濟"
+        ]
+      },
+      {
+        "t": "有沒有好公司被一起拖下水，可以撿嗎",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "關鍵價位在哪，現在是逃命還是抄底",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "盤勢分析"
+        ]
+      },
+      {
+        "t": "終於有波動了，今天應該會很好玩",
+        "p": "E",
+        "tags": [
+          "當沖",
+          "期貨選擇權"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "你最常怎麼決定要不要買一支股票？",
+    "options": [
+      {
+        "t": "先估狗一下公司，不然我連它賣什麼都不知道",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "其他投資理財"
+        ]
+      },
+      {
+        "t": "看它適不適合長期放進自己的配置",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "研究公司競爭力、財報和產業趨勢",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "看技術線型、籌碼、量價和進場位置",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "籌碼分析"
+        ]
+      },
+      {
+        "t": "新聞有在講、朋友也在聊，而且我有感覺",
+        "p": "E",
+        "tags": [
+          "盤勢分析",
+          "其他投資理財"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "你最受不了哪一種投資分享內容？",
+    "options": [
+      {
+        "t": "滿篇都是術語，講得像我欠它一張金融證照",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "其他投資理財"
+        ]
+      },
+      {
+        "t": "只講賺多少，完全不講可能死多慘",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "只給答案，不給分析過程，叫我怎麼相信",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "美股投資"
+        ]
+      },
+      {
+        "t": "分析半天，最後還是不知道哪裡買哪裡賣",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "盤勢分析"
+        ]
+      },
+      {
+        "t": "太多字，能不能先告訴我現在有沒有機會",
+        "p": "E",
+        "tags": [
+          "當沖",
+          "盤勢分析"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "如果投資是一場遊戲，你比較像哪種玩家？",
+    "options": [
+      {
+        "t": "先看新手教學，至少不要一出生就被怪打死",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "其他投資理財"
+        ]
+      },
+      {
+        "t": "穩扎穩打慢慢來，不要畢業安全第一",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "房地產"
+        ]
+      },
+      {
+        "t": "苦心研讀報告新聞，以前唸書都沒這麼認真",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "一步一步抓節奏，等對手露出破綻再出手",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "籌碼分析"
+        ]
+      },
+      {
+        "t": "直接衝進去，死了再重來，反正刺激最重要",
+        "p": "E",
+        "tags": [
+          "當沖",
+          "期貨選擇權"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "如果每週只能收到一份投資內容，你最希望它做到什麼？",
+    "options": [
+      {
+        "t": "把複雜東西翻譯成人類的語言",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "其他投資理財"
+        ]
+      },
+      {
+        "t": "給我一套不用每天盯盤也能活下去的方法",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "幫我整理值得研究的公司和產業",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "美股投資"
+        ]
+      },
+      {
+        "t": "快速抓出行情重點，找到大戶籌碼動態",
+        "p": "D",
+        "tags": [
+          "盤勢分析",
+          "技術分析"
+        ]
+      },
+      {
+        "t": "告訴我現在市場最熱的飆股是什麼，我先卡位",
+        "p": "E",
+        "tags": [
+          "盤勢分析",
+          "當沖"
+        ]
+      }
+    ]
+  },
+  {
+    "q": "哪一句最像你的投資人生？",
+    "options": [
+      {
+        "t": "「我不是不想買，我只是還沒搞懂遊戲」",
+        "p": "A",
+        "tags": [
+          "所有投資理財",
+          "ETF"
+        ]
+      },
+      {
+        "t": "「錢可以慢慢賺，但拜託不要突然爆炸 🙏」",
+        "p": "B",
+        "tags": [
+          "ETF",
+          "價值投資"
+        ]
+      },
+      {
+        "t": "「我研究得夠深入，市場只是還沒反應（翹腳）」",
+        "p": "C",
+        "tags": [
+          "產業分析",
+          "總體經濟"
+        ]
+      },
+      {
+        "t": "「市場一直在動，有下單才感覺像是活著」",
+        "p": "D",
+        "tags": [
+          "技術分析",
+          "籌碼分析"
+        ]
+      },
+      {
+        "t": "「一張不賣，奇蹟自來」",
+        "p": "E",
+        "tags": [
+          "當沖",
+          "技術分析"
+        ]
+      }
+    ]
+  }
+];
+
+const personas = {
+  "A": {
+    "name": "股市迷路小幼苗",
+    "desc": "你不是不想賺錢，只是每次看到一堆術語，靈魂就會先離開身體。先把遊戲規則搞懂，你會走得比想像中穩！"
+  },
+  "B": {
+    "name": "佛系資產飼養員",
+    "desc": "你相信錢要慢慢養，不需要每天都挖出來看有沒有長大。你最重視配置、紀律，還有晚上睡得著。"
+  },
+  "C": {
+    "name": "財報考古研究員",
+    "desc": "別人只看新聞標題，你卻想一路挖出所有財報。你相信只要多研究一點，就能不被市場呼巴掌。"
+  },
+  "D": {
+    "name": "盤面反射神經戰士",
+    "desc": "市場一有波動，你的眼睛、手指和心跳會一起跳動。你十分在意交易節奏、價位、籌碼和時機。"
+  },
+  "E": {
+    "name": "攤平哲學信仰者",
+    "desc": "別人研究完才買，你買完才開始培養信仰。進場全靠你的感覺，套牢就改成信仰它，跌越多買越多。"
+  }
+};
+
+const mixedNames = {
+  "AB": "股市迷路小幼苗",
+  "AC": "財報考古研究員",
+  "AD": "盤面反射神經戰士",
+  "AE": "熱血梭哈玩家",
+  "BC": "佛系資產飼養員",
+  "BD": "市場狙擊手",
+  "BE": "熱血梭哈玩家",
+  "CD": "市場狙擊手",
+  "CE": "攤平哲學信仰者",
+  "DE": "永不退場戰士"
+};
+
+const mixedDescs = {
+  "AB": "你想先搞懂投資，卻又很怕不小心把錢弄不見，偏好有人帶路、腳步踏穩才繼續前進。",
+  "AC": "基礎還在補，但研究魂已經先上線，看到公司和產業就忍不住想挖深一點。",
+  "AD": "還沒完全搞懂市場，手已經先打開看盤軟體，行動速度經常比理解速度快。",
+  "AE": "規則還沒看完，勇氣和感覺已經到位，容易先上車再慢慢研究發生什麼事。",
+  "BC": "你重視穩定配置，但也不甘心只拿平均報酬，會在安全範圍內尋找成長機會。",
+  "BD": "平常不亂動，等到風險、價位和時機都對了才出手，追求穩定中的精準操作。",
+  "BE": "嘴上說要控制風險、長期持有，但市場一有刺激，手還是會忍不住多按幾下。",
+  "CD": "你既要研究公司和產業，也要抓進出場時機，功課做完就不想只坐著看。",
+  "CE": "你會做研究，但一旦買進就容易越看越有信仰，資料最後常被拿來支持繼續加碼。",
+  "DE": "進場靠反應，行情靠感覺，套牢後再用信仰和攤平延長這場遊戲。"
+};
+
+
+let current = 0;
+let answers = Array(questions.length).fill(null);
+let runtimeQuestions = [];
+
+function shuffledCopy(items){
+  const copy = [...items];
+  for(let i = copy.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function prepareQuestions(){
+  runtimeQuestions = questions.map(question => ({
+    ...question,
+    options: shuffledCopy(question.options)
+  }));
+}
+
+
+function escapeHtml(value){
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+function escapeAttribute(value){ return escapeHtml(value); }
+
+
+function openCurtain(){
+  const intro = document.getElementById("curtainIntro");
+  intro.classList.add("opening");
+  document.body.classList.remove("curtain-lock");
+
+  prepareQuestions();
+  current = 0;
+  answers = Array(questions.length).fill(null);
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
+  renderQuestion();
+
+  setTimeout(()=>{
+    intro.classList.add("opened");
+  }, 1150);
+}
+
+function startQuiz(){
+  prepareQuestions();
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
+  renderQuestion();
+}
+function renderQuestion(){
+  const q = runtimeQuestions[current];
+  document.getElementById("counter").textContent = `第 ${current+1} 題，共 ${questions.length} 題`;
+  const pct = Math.round(((current+1)/questions.length)*100);
+  document.getElementById("percent").textContent = pct + "%";
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("questionText").textContent = q.q;
+
+  const box = document.getElementById("answers");
+  box.innerHTML = "";
+  q.options.forEach((opt, idx)=>{
+    const btn = document.createElement("button");
+    btn.className = "answer" + (answers[current] === idx ? " selected" : "");
+    btn.textContent = opt.t;
+    btn.onclick = ()=>selectAnswer(idx);
+    box.appendChild(btn);
+  });
+
+  document.getElementById("prevBtn").disabled = current === 0;
+  document.getElementById("nextBtn").disabled = answers[current] === null;
+  document.getElementById("nextBtn").textContent = current === questions.length-1 ? "看結果" : "下一題";
+}
+function selectAnswer(idx){
+  answers[current] = idx;
+  renderQuestion();
+}
+function prevQuestion(){
+  if(current>0){ current--; renderQuestion(); }
+}
+function nextQuestion(){
+  if(answers[current] === null) return;
+  if(current < questions.length-1){
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+function calculate(){
+  const ps = {A:0,B:0,C:0,D:0,E:0};
+  const tags = {};
+  answers.forEach((ans, i)=>{
+    const opt = runtimeQuestions[i].options[ans];
+    ps[opt.p] += 2;
+    opt.tags.forEach((tag, idx)=>{
+      tags[tag] = (tags[tag] || 0) + (idx===0 ? 2 : 1);
+    });
+  });
+  return {ps,tags};
+}
+
+const resultTarotImages = {
+  "股市迷路小幼苗": "assets/sprout.png",
+  "佛系資產飼養員": "assets/keeper.png",
+  "財報考古研究員": "assets/archivist.png",
+  "盤面反射神經戰士": "assets/reactor.png",
+  "市場狙擊手": "assets/hunter.png",
+  "熱血梭哈玩家": "assets/gambler.png",
+  "攤平哲學信仰者": "assets/believer.png",
+  "永不退場戰士": "assets/believer.png"
+};
+
+function showResult(){
+  const {ps,tags} = calculate();
+  const ranked = Object.entries(ps).sort((a,b)=>b[1]-a[1]);
+  const first = ranked[0], second = ranked[1];
+  let title, desc;
+
+  if(first[1] - second[1] <= 2){
+    const code = [first[0],second[0]].sort().join("");
+    title = mixedNames[code] || `${personas[first[0]].name} × ${personas[second[0]].name}`;
+    desc = mixedDescs[code] || `你同時帶有「${personas[first[0]].name}」和「${personas[second[0]].name}」的特質。`;
+  }else{
+    title = personas[first[0]].name;
+    desc = personas[first[0]].desc;
+  }
+
+  let courseRank = Object.entries(tags).sort((a,b)=>b[1]-a[1]);
+
+  // 新手與賭狗保護：避免直接把高風險工具排在最前面
+  if(first[0] === "A" || first[0] === "E"){
+    const risky = ["當沖","期貨選擇權"];
+    courseRank = courseRank.sort((a,b)=>{
+      const ar = risky.includes(a[0]) ? 1 : 0;
+      const br = risky.includes(b[0]) ? 1 : 0;
+      if(ar !== br) return ar-br;
+      return b[1]-a[1];
+    });
+  }
+
+  const topCourses = courseRank.slice(0,4);
+
+  // 依分類分數計算每個專欄的符合程度
+  let recommended = courses
+    .map((course, index) => {
+      const matched = course.categories
+        .map(category => ({category, score: tags[category] || 0}))
+        .filter(item => item.score > 0)
+        .sort((a,b) => b.score - a.score);
+      let score = matched.reduce((sum, item, idx) => sum + item.score * (idx === 0 ? 2 : 1), 0);
+
+      // 高風險傾向仍優先導向技術、籌碼與盤勢判讀
+      if(first[0] === "E"){
+        if(course.categories.includes("技術分析")) score += 5;
+        if(course.categories.includes("籌碼分析")) score += 4;
+        if(course.categories.includes("盤勢分析")) score += 3;
+        if(course.categories.includes("當沖")) score -= 3;
+        if(course.categories.includes("期貨選擇權")) score -= 5;
+      }
+
+      return {...course, score, matched, index};
+    })
+    .sort((a,b) => b.score - a.score || b.matched.length - a.matched.length || a.index - b.index)
+    .slice(0,4);
+
+  if(recommended.length === 0){
+    recommended = courses.slice(0,4).map((course, index) => ({
+      ...course,
+      score: 0,
+      matched: [],
+      index
+    }));
+  }
+
+  document.getElementById("quizScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
+document.getElementById("resultTitle").textContent = `診斷結果：${title}`;
+  document.getElementById("resultDesc").textContent = desc;
+  const tarotImage = document.getElementById("resultTarotImage");
+  tarotImage.src = resultTarotImages[title] || "assets/sprout.png";
+  tarotImage.alt = `${title}塔羅牌`;
+
+  const tagBox = document.getElementById("courseTags");
+  tagBox.innerHTML = "";
+  topCourses.forEach(([name])=>{
+    const span = document.createElement("span");
+    span.className = "tag";
+    span.textContent = name;
+    tagBox.appendChild(span);
+  });
+
+  const courseBox = document.getElementById("courseGrid");
+  courseBox.innerHTML = "";
+  if(!recommended.length){
+    courseBox.innerHTML = '<p class="result-desc">目前沒有符合的推薦專案，請重新測驗。</p>';
+  }
+  recommended.forEach(course => {
+    const card = document.createElement("article");
+    card.className = "course-card";
+
+    const labels = course.categories
+      .map(category => `<span class="course-category">${escapeHtml(category)}</span>`)
+      .join("");
+
+    card.innerHTML = `
+<img class="course-cover" src="${escapeAttribute(course.image)}" alt="${escapeAttribute(course.title)}封面"
+           onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22600%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23eef1f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23667085%22 font-size=%2230%22%3E專欄封面%3C/text%3E%3C/svg%3E'">
+      <div class="course-body">
+        <div class="course-categories">${labels}</div>
+        <h4 class="course-title">${escapeHtml(course.title)}</h4>
+        <p class="course-desc">${escapeHtml(course.description)}</p>
+        <a class="course-link" href="${escapeAttribute(course.url)}" target="_blank" rel="noopener noreferrer">去看看能不能救</a>
+      </div>`;
+    courseBox.appendChild(card);
+  });
+}
+function restartQuiz(){
+  current = 0;
+  answers = Array(questions.length).fill(null);
+  prepareQuestions();
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
+  renderQuestion();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+</script>
+</body>
+</html>
