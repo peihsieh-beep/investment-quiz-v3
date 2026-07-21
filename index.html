@@ -401,7 +401,7 @@
       text-align:center;
       text-decoration:none;
       font-size:14px;
-      font-weight:850;
+      font-weight:600;
       border:0;
       box-shadow:none;
     }
@@ -411,7 +411,7 @@ h1,
     .result h2,
     .question{
       font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
-      font-weight:800;
+      font-weight:600;
     }
 
     h1{
@@ -719,8 +719,8 @@ h1,
 
     <div class="curtain-center">
       <div class="curtain-kicker curtain-kicker-only">投資行為鑑定所</div>
-      <h1 class="curtain-title">你在股市是哪一種狠角色？</h1>
-      <p class="curtain-copy">紅幕之後，會揭露你真正的市場本能。</p>
+      <h1 class="curtain-title">你在股市是哪一種角色？</h1>
+      <p class="curtain-copy">揭開紅色布幕，會揭露你真正的市場本能</p>
       <button class="curtain-btn" onclick="openCurtain()">拉開布幕，接受鑑定</button>
     </div>
   </div>
@@ -753,28 +753,40 @@ h1,
       </div>
     </section>
 
-    <section id="resultScreen" class="card result hidden">
-      <div class="result-tarot-wrap">
-        <img id="resultTarotImage" class="result-tarot-image" src="" alt="投資人格塔羅牌">
-      </div>
-      <h2 id="resultTitle"></h2>
-      <p id="resultDesc" class="result-desc"></p>
+<section id="resultScreen" class="card result hidden">
+  <h2 id="resultTitle"></h2>
+  <p id="resultDesc" class="result-desc"></p>
 
-      <div class="section">
-        <h3>你的腦袋比較缺這幾塊</h3>
-        <div id="courseTags" class="tags"></div>
-      </div>
+  <div class="result-tarot-wrap">
+    <img
+      id="resultTarotImage"
+      class="result-tarot-image"
+      src=""
+      alt="投資人格鑑定結果"
+    >
+  </div>
 
-      <div class="section">
-        <div class="recommend-title">
-          <h3>系統覺得你還有救，先看這些</h3>
-          <span>不是通靈，是真的有算</span>
-        </div>
-        <div id="courseGrid" class="course-grid"></div>
-      </div>
+  <div class="section">
+    <h3>你可能比較缺這幾塊</h3>
+    <div id="courseTags" class="tags"></div>
+  </div>
 
-      <button class="btn btn-primary" style="margin-top:22px" onclick="restartQuiz()">不服？再測一次</button>
-    </section>
+  <div class="section">
+    <div class="recommend-title">
+      <h3>系統覺得你還有救，先看這些</h3>
+      <span>不是通靈，是真的有算</span>
+    </div>
+    <div id="courseGrid" class="course-grid"></div>
+  </div>
+
+  <button
+    class="btn btn-primary"
+    style="margin-top:22px"
+    onclick="restartQuiz()"
+  >
+    不服？再測一次
+  </button>
+</section>
   </main>
 
 <script>
@@ -1710,8 +1722,7 @@ function showResult(){
 
   document.getElementById("quizScreen").classList.add("hidden");
   document.getElementById("resultScreen").classList.remove("hidden");
-document.getElementById("resultTitle").textContent = `診斷結果：${title}`;
-  document.getElementById("resultDesc").textContent = desc;
+  document.getElementById("resultTitle").textContent = `鑑定結果：${title}`;
   const tarotImage = document.getElementById("resultTarotImage");
   tarotImage.src = resultTarotImages[title] || "assets/sprout.png";
   tarotImage.alt = `${title}塔羅牌`;
