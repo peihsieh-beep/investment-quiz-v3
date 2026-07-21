@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Noto+Serif+TC:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-  <title>你在股市是那一種狠角色？</title>
+  <title>你在股市是那一種角色？</title>
   <style>
 
     :root{
@@ -236,15 +236,7 @@
       text-align:center;
       padding:48px 32px;
     }
-
-    .start .icons{
-      font-size:44px;
-      letter-spacing:12px;
-      margin-bottom:18px;
-      filter:drop-shadow(0 8px 18px rgba(0,0,0,.25));
-    }
-
-    .start h2,.result h2{
+.start h2,.result h2{
       font-size:clamp(30px,5vw,44px);
       margin:0 0 14px;
       letter-spacing:-.035em;
@@ -405,7 +397,6 @@
       border:0;
       box-shadow:none;
     }
-.course-card.revealed
 h1,
     .start h2,
     .result h2,
@@ -631,13 +622,7 @@ h1,
       border:1px solid rgba(213,154,82,.06);
       border-radius:18px;
     }
-
-    .start .icons{
-      opacity:.88;
-      filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));
-    }
-
-    .section{
+.section{
       background:
         linear-gradient(180deg,rgba(126,18,28,.07),transparent),
         #140d0f;
@@ -666,8 +651,7 @@ h1,
       .controls{gap:8px}
       .btn{padding:12px 14px}
 .recommend-title{align-items:flex-start;flex-direction:column}
-      .start .icons{font-size:36px;letter-spacing:8px}
-    }
+}
 
   
 /* Readability refinement */
@@ -708,6 +692,47 @@ h1,
   .result-tarot-image{width:min(100%, 300px);}
 }
 
+
+/* Result page typography refinement */
+#resultTitle{
+  font-weight:600;
+  line-height:1.4;
+}
+
+#resultDesc{
+  display:block;
+  max-width:660px;
+  margin:0 auto 26px;
+  color:var(--muted);
+  font-size:16px;
+  font-weight:400;
+  line-height:1.85;
+  opacity:1;
+  visibility:visible;
+}
+
+#resultScreen h3{
+  font-weight:600;
+}
+
+#resultScreen .tag{
+  font-weight:500;
+}
+
+#resultScreen .course-title{
+  font-weight:600;
+}
+
+#resultScreen .course-desc{
+  font-weight:400;
+}
+
+#resultScreen .course-link,
+#resultScreen > .btn{
+  font-weight:400;
+  letter-spacing:.02em;
+}
+
 </style>
 </head>
 <body class="curtain-lock">
@@ -733,8 +758,7 @@ h1,
     </header>
 
     <section id="startScreen" class="card start hidden">
-      <div class="icons">🌱 📈 🔥 ⚡ 🐶</div>
-      <h2>準備好面對真實的自己了嗎？</h2>
+<h2>準備好面對真實的自己了嗎？</h2>
       <p>沒有標準答案，只有你平常嘴上說的，跟你真的做的</p>
       <button class="btn btn-primary" onclick="startQuiz()">開始公開處刑</button>
     </section>
@@ -1723,6 +1747,7 @@ function showResult(){
   document.getElementById("quizScreen").classList.add("hidden");
   document.getElementById("resultScreen").classList.remove("hidden");
   document.getElementById("resultTitle").textContent = `鑑定結果：${title}`;
+  document.getElementById("resultDesc").textContent = desc;
   const tarotImage = document.getElementById("resultTarotImage");
   tarotImage.src = resultTarotImages[title] || "assets/sprout.png";
   tarotImage.alt = `${title}塔羅牌`;
@@ -1771,6 +1796,11 @@ function restartQuiz(){
   renderQuestion();
   window.scrollTo({top:0, behavior:"smooth"});
 }
+</script>
+  <script>
+document.addEventListener("contextmenu", event => {
+  event.preventDefault();
+});
 </script>
 </body>
 </html>
