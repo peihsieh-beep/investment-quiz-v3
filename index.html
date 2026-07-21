@@ -762,14 +762,14 @@ h1,
   font-weight:400;
 }
 
-/* Hidden 4:5 social sharing card: 1080 × 1350 */
+/* Hidden 9:16 social sharing card: 1080 × 1920 */
 .download-result-card{
   position:fixed;
   left:-99999px;
   top:0;
   width:1080px;
-  height:1350px;
-  padding:62px 76px 54px;
+  height:1920px;
+  padding:90px 76px 72px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -826,8 +826,8 @@ h1,
 .download-result-image{
   position:relative;
   display:block;
-  width:430px;
-  height:645px;
+  width:500px;
+  height:750px;
   margin:0 auto;
   object-fit:cover;
   border:2px solid rgba(213,154,82,.55);
@@ -840,8 +840,8 @@ h1,
 
 .download-solution-wrap{
   position:relative;
-  width:720px;
-  margin:26px auto 0;
+  width:760px;
+  margin:34px auto 0;
   padding:22px 26px;
   border-radius:24px;
   background:rgba(255,255,255,.04);
@@ -879,7 +879,7 @@ h1,
 .download-footer{
   position:relative;
   margin-top:auto;
-  padding-top:25px;
+  padding-top:34px;
   color:#d8b27a;
   font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
   font-size:23px;
@@ -899,10 +899,10 @@ h1,
 
 /* Result page solution */
 .result-solution-section{
-  width:min(100%, 560px);
+  width:min(100%, 660px);
   margin:0 auto 22px;
   padding:20px 24px;
-  text-align:left;
+  text-align:center;
   border:1px solid rgba(213,154,82,.22);
   border-radius:18px;
   background:
@@ -2194,9 +2194,9 @@ async function downloadResultImage(event){
       allowTaint:false,
       logging:false,
       width:1080,
-      height:1350,
+      height:1920,
       windowWidth:1080,
-      windowHeight:1350
+      windowHeight:1920
     });
 
     const title = document
