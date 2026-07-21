@@ -580,17 +580,18 @@ h1,
       line-height:1.8;
     }
     @media (max-width:640px){
-  .curtain-center{
-    width:calc(100% - 20px);
-    padding-left:12px;
-    padding-right:12px;
-  }
+      .curtain-center{
+        width:calc(100% - 20px);
+        padding-left:12px;
+        padding-right:12px;
+      }
 
-  .curtain-title{
-    font-size:clamp(27px, 8vw, 40px);
-    white-space:nowrap;
-  }
-}
+      .curtain-title{
+        font-size:clamp(27px, 8vw, 40px);
+        white-space:nowrap;
+      }
+    }
+
     .curtain-btn{
       margin-top:26px;
       border:1px solid rgba(212,180,131,.45);
@@ -747,17 +748,127 @@ h1,
   letter-spacing:.02em;
 }
 
+
+/* Result action buttons */
+.result-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:22px;
+}
+
+.result-actions .btn{
+  margin-left:0;
+  font-weight:400;
+}
+
+/* Hidden 4:5 social sharing card: 1080 × 1350 */
+.download-result-card{
+  position:fixed;
+  left:-99999px;
+  top:0;
+  width:1080px;
+  height:1350px;
+  padding:62px 76px 54px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  color:#fff6ea;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(126,18,28,.32), transparent 34%),
+    radial-gradient(circle at 84% 8%, rgba(213,154,82,.13), transparent 30%),
+    linear-gradient(180deg,#1b0e11 0%,#10090b 100%);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  overflow:hidden;
+}
+
+.download-result-card::before{
+  content:"";
+  position:absolute;
+  inset:24px;
+  border:2px solid rgba(213,154,82,.28);
+  border-radius:34px;
+  pointer-events:none;
+}
+
+.download-kicker{
+  position:relative;
+  margin-bottom:18px;
+  color:#d8b27a;
+  font-size:23px;
+  font-weight:500;
+  letter-spacing:.18em;
+}
+
+#downloadResultTitle{
+  position:relative;
+  width:100%;
+  margin:0 auto 16px;
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  color:#fff2df;
+  font-size:48px;
+  font-weight:600;
+  line-height:1.3;
+  white-space:nowrap;
+}
+
+#downloadResultDesc{
+  position:relative;
+  width:880px;
+  margin:0 auto 26px;
+  color:#cbb8b0;
+  font-size:23px;
+  font-weight:400;
+  line-height:1.65;
+}
+
+.download-result-image{
+  position:relative;
+  display:block;
+  width:430px;
+  height:645px;
+  margin:0 auto;
+  object-fit:cover;
+  border:2px solid rgba(213,154,82,.55);
+  border-radius:22px;
+  box-shadow:0 24px 60px rgba(0,0,0,.48);
+  -webkit-user-drag:none;
+  user-select:none;
+}
+
+.download-footer{
+  position:relative;
+  margin-top:auto;
+  padding-top:25px;
+  color:#d8b27a;
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  font-size:23px;
+  letter-spacing:.06em;
+}
+
+@media (max-width:600px){
+  .result-actions{
+    flex-direction:column;
+  }
+
+  .result-actions .btn{
+    width:100%;
+  }
+}
+
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body class="curtain-lock">
 
-  <div id="curtainIntro" class="curtain-intro" aria-label="股市角色鑑定所開場">
+  <div id="curtainIntro" class="curtain-intro" aria-label="PPA 投資行為鑑定所開場">
     <div class="curtain-top"></div>
     <div class="curtain-panel curtain-left"></div>
     <div class="curtain-panel curtain-right"></div>
 
     <div class="curtain-center">
-      <div class="curtain-kicker curtain-kicker-only">投資行為鑑定所</div>
+      <div class="curtain-kicker curtain-kicker-only">PPA 投資行為鑑定所</div>
       <h1 class="curtain-title">你在股市是哪一種角色？</h1>
       <p class="curtain-copy">揭開紅色布幕，會揭露你真正的市場本能</p>
       <button class="curtain-btn" onclick="openCurtain()">拉開布幕，接受鑑定</button>
@@ -766,7 +877,7 @@ h1,
 
   <main class="wrap">
     <header class="hero">
-      <div class="eyebrow">投資行為鑑定所・受測區</div>
+      <div class="eyebrow">PPA 投資行為鑑定所・受測區</div>
       <h1>你在股市是那一種角色？</h1>
       <p>用 10 題看看你究竟是在投資、做研究，還是在用錢玩大型線上遊戲🔥</p>
     </header>
@@ -801,6 +912,8 @@ h1,
       class="result-tarot-image"
       src=""
       alt="投資人格鑑定結果"
+      draggable="false"
+      oncontextmenu="return false;"
     >
   </div>
 
@@ -817,15 +930,43 @@ h1,
     <div id="courseGrid" class="course-grid"></div>
   </div>
 
-  <button
-    class="btn btn-primary"
-    style="margin-top:22px"
-    onclick="restartQuiz()"
-  >
-    不服？再測一次
-  </button>
+<div class="result-actions">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      onclick="downloadResultImage(event)"
+    >
+      下載鑑定結果
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      onclick="restartQuiz()"
+    >
+      不服？再測一次
+    </button>
+  </div>
 </section>
   </main>
+
+  <div id="downloadResultCard" class="download-result-card" aria-hidden="true">
+    <div class="download-kicker">PPA 投資行為鑑定所</div>
+
+    <h2 id="downloadResultTitle"></h2>
+    <p id="downloadResultDesc"></p>
+
+    <img
+      id="downloadResultImage"
+      class="download-result-image"
+      src=""
+      alt=""
+      draggable="false"
+    >
+
+    <div class="download-footer">你在股市是哪一種角色？</div>
+  </div>
+
 
 <script>
 const courses = [
@@ -1762,9 +1903,19 @@ function showResult(){
   document.getElementById("resultScreen").classList.remove("hidden");
   document.getElementById("resultTitle").textContent = `鑑定結果：${title}`;
   document.getElementById("resultDesc").textContent = desc;
+
+  const imageUrl = resultTarotImages[title] || "assets/sprout.png";
+
   const tarotImage = document.getElementById("resultTarotImage");
-  tarotImage.src = resultTarotImages[title] || "assets/sprout.png";
+  tarotImage.src = imageUrl;
   tarotImage.alt = `${title}塔羅牌`;
+
+  document.getElementById("downloadResultTitle").textContent = `鑑定結果：${title}`;
+  document.getElementById("downloadResultDesc").textContent = desc;
+
+  const downloadImage = document.getElementById("downloadResultImage");
+  downloadImage.src = imageUrl;
+  downloadImage.alt = `${title}塔羅牌`;
 
   const tagBox = document.getElementById("courseTags");
   tagBox.innerHTML = "";
@@ -1800,6 +1951,66 @@ function showResult(){
     courseBox.appendChild(card);
   });
 }
+
+async function waitForImage(image){
+  if(image.complete && image.naturalWidth > 0) return;
+
+  await new Promise((resolve, reject) => {
+    image.addEventListener("load", resolve, {once:true});
+    image.addEventListener("error", reject, {once:true});
+  });
+}
+
+async function downloadResultImage(event){
+  const button = event.currentTarget;
+  const originalText = button.textContent;
+
+  button.disabled = true;
+  button.textContent = "圖片產製中…";
+
+  try{
+    const card = document.getElementById("downloadResultCard");
+    const image = document.getElementById("downloadResultImage");
+
+    await waitForImage(image);
+
+    if(document.fonts && document.fonts.ready){
+      await document.fonts.ready;
+    }
+
+    const canvas = await html2canvas(card, {
+      backgroundColor:null,
+      scale:1,
+      useCORS:true,
+      allowTaint:false,
+      logging:false,
+      width:1080,
+      height:1350,
+      windowWidth:1080,
+      windowHeight:1350
+    });
+
+    const title = document
+      .getElementById("resultTitle")
+      .textContent
+      .replace("鑑定結果：", "")
+      .trim();
+
+    const link = document.createElement("a");
+    link.download = `PPA投資行為鑑定結果_${title}.png`;
+    link.href = canvas.toDataURL("image/png", 1);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }catch(error){
+    console.error("下載鑑定結果失敗：", error);
+    alert("圖片產製失敗，請重新整理後再試一次。");
+  }finally{
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+
 function restartQuiz(){
   current = 0;
   answers = Array(questions.length).fill(null);
@@ -1818,3 +2029,4 @@ document.addEventListener("contextmenu", event => {
 </script>
 </body>
 </html>
+
