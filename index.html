@@ -769,7 +769,7 @@ h1,
   top:0;
   width:1080px;
   height:1920px;
-  padding:108px 76px 90px;
+  padding:96px 76px 84px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -809,37 +809,40 @@ h1,
 }
 
 .download-result-label{
-  margin-bottom:8px;
+  margin-bottom:12px;
   color:#d8b27a;
-  font-size:34px;
+  font-size:30px;
   font-weight:600;
-  letter-spacing:.12em;
+  letter-spacing:.18em;
 }
 
 #downloadResultTitle{
   margin:0;
   font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
   color:#fff2df;
-  font-size:74px;
+  font-size:82px;
   font-weight:700;
-  line-height:1.16;
+  line-height:1.12;
+  letter-spacing:-.03em;
 }
 
 #downloadResultDesc{
   position:relative;
-  width:920px;
-  margin:0 auto 34px;
+  width:680px;
+  margin:0 auto 44px;
   color:#cbb8b0;
-  font-size:28px;
-  font-weight:400;
-  line-height:1.65;
+  font-size:38px;
+  font-weight:500;
+  line-height:1.55;
+  letter-spacing:.01em;
+  white-space:pre-line;
 }
 
 .download-result-image{
   position:relative;
   display:block;
-  width:500px;
-  height:750px;
+  width:460px;
+  height:690px;
   margin:0 auto;
   object-fit:cover;
   border:2px solid rgba(213,154,82,.55);
@@ -852,38 +855,38 @@ h1,
 
 .download-solution-wrap{
   position:relative;
-  width:760px;
-  margin:34px auto 0;
-  padding:22px 26px;
-  border-radius:24px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(213,154,82,.18);
+  width:720px;
+  margin:46px auto 0;
+  padding:30px 34px;
+  border-radius:26px;
+  background:transparent;
+  border:1px solid rgba(213,154,82,.22);
 }
 
 .download-solution-title{
-  margin-bottom:10px;
+  margin-bottom:18px;
   color:#d8b27a;
-  font-size:34px;
+  font-size:32px;
   font-weight:700;
-  letter-spacing:.08em;
+  letter-spacing:.12em;
 }
 
 .download-result-solution{
   width:fit-content;
   max-width:100%;
   margin:0 auto;
-  padding-left:30px;
+  padding-left:34px;
   color:#eadfd3;
-  font-size:30px;
-  font-weight:400;
+  font-size:32px;
+  font-weight:500;
   line-height:1.72;
   text-align:left;
   list-style-position:outside;
 }
 
 .download-result-solution li{
-  margin:10px 0;
-  padding-left:6px;
+  margin:14px 0;
+  padding-left:8px;
 }
 
 .download-result-solution li::marker{
@@ -893,11 +896,12 @@ h1,
 .download-footer{
   position:relative;
   margin-top:auto;
-  padding-top:34px;
+  padding-top:42px;
   color:#d8b27a;
   font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
-  font-size:32px;
-  letter-spacing:.06em;
+  font-size:34px;
+  font-weight:600;
+  letter-spacing:.08em;
 }
 
 @media (max-width:600px){
@@ -2124,7 +2128,11 @@ function showResult(){
   tarotImage.alt = `${title}塔羅牌`;
 
   document.getElementById("downloadResultTitle").textContent = title;
-  document.getElementById("downloadResultDesc").textContent = desc;
+  const storyDesc = desc
+    .replace(/。/g, "。\n")
+    .replace(/！/g, "！\n")
+    .trim();
+  document.getElementById("downloadResultDesc").textContent = storyDesc;
   const resultSolutionList = document.getElementById("resultSolutionList");
   const downloadSolutionList = document.getElementById("downloadResultSolution");
 
