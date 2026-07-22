@@ -2383,5 +2383,16 @@ document.addEventListener("contextmenu", event => {
   event.preventDefault();
 });
 </script>
+<script>
+(function () {
+  function reportHeight() {
+    window.parent.postMessage({ type: 'setHeight', height: document.body.scrollHeight }, '*');
+  }
+  var ro = new ResizeObserver(reportHeight);
+  ro.observe(document.body);
+  reportHeight();
+})();
+</script>
+
 </body>
 </html>
