@@ -997,6 +997,71 @@ h1,
   align-self:center;
 }
 
+
+/* Result gift coupon */
+.result-gift-action{
+  display:flex;
+  justify-content:center;
+  margin:24px auto 6px;
+}
+
+.gift-coupon-btn{
+  width:min(100%, 560px);
+  border:1px solid rgba(213,154,82,.62);
+  border-radius:18px;
+  padding:17px 24px;
+  cursor:pointer;
+  color:#fff6ea;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(213,154,82,.18),transparent 38%),
+    linear-gradient(135deg,#8f1821,#b52b31);
+  box-shadow:0 14px 34px rgba(90,8,15,.38);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.gift-coupon-btn:hover{
+  transform:translateY(-2px);
+  border-color:#e7ba7d;
+  box-shadow:0 18px 40px rgba(90,8,15,.46);
+}
+
+.gift-coupon-kicker,
+.gift-coupon-title{
+  display:block;
+}
+
+.gift-coupon-kicker{
+  margin-bottom:4px;
+  color:#f0d6b4;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.08em;
+}
+
+.gift-coupon-title{
+  color:#fff;
+  font-size:22px;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.result-actions-bottom{
+  margin-top:24px;
+  padding-top:22px;
+  border-top:1px solid var(--line);
+}
+
+@media (max-width:600px){
+  .gift-coupon-btn{
+    width:100%;
+    padding:16px 18px;
+  }
+
+  .gift-coupon-title{
+    font-size:20px;
+  }
+}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
@@ -1064,7 +1129,31 @@ h1,
 
   
 
-<div class="result-actions">
+<div class="result-gift-action">
+    <button
+      type="button"
+      class="gift-coupon-btn"
+      onclick="claimDiscountCoupon()"
+    >
+      <span class="gift-coupon-kicker">恭喜獲得進修禮</span>
+      <span class="gift-coupon-title">訂閱 9 折券</span>
+    </button>
+  </div>
+
+  <div class="section">
+    <h3>你可能比較缺這幾塊</h3>
+    <div id="courseTags" class="tags"></div>
+  </div>
+
+  <div class="section">
+    <div class="recommend-title">
+      <h3>鑑定結果顯示還有救，可以先看看這些專欄</h3>
+      <span>投資達人任你選</span>
+    </div>
+    <div id="courseGrid" class="course-grid"></div>
+  </div>
+
+  <div class="result-actions result-actions-bottom">
     <button
       type="button"
       class="btn btn-secondary"
@@ -1081,20 +1170,7 @@ h1,
       不服？再測一次
     </button>
   </div>
-
-
-  <div class="section">
-    <h3>你可能比較缺這幾塊</h3>
-    <div id="courseTags" class="tags"></div>
-  </div>
-
-  <div class="section">
-    <div class="recommend-title">
-      <h3>鑑定結果顯示還有救，可以先看看這些專欄</h3>
-      <span>投資達人任你選</span>
-    </div>
-    <div id="courseGrid" class="course-grid"></div>
-  </div></section>
+</section>
   </main>
 
   <div id="downloadResultCard" class="download-result-card" aria-hidden="true">
@@ -1124,6 +1200,19 @@ h1,
 
 
 <script>
+
+/* 將優惠券領取頁網址填入這裡 */
+const discountCouponUrl = "https://www.pressplay.cc/link/9FDED1C5";
+
+function claimDiscountCoupon(){
+  if(discountCouponUrl){
+    window.open(discountCouponUrl, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  alert("請先在程式中的 discountCouponUrl 填入訂閱 9 折券領取網址。");
+}
+
 const courses = [
   {
     "title": "權證小哥的交易筆記本",
