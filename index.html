@@ -2404,13 +2404,15 @@ function showResult(){
   downloadImage.alt = `${title}塔羅牌`;
 
   const tagBox = document.getElementById("courseTags");
-  tagBox.innerHTML = "";
-  topCourses.forEach(([name])=>{
-    const span = document.createElement("span");
-    span.className = "tag";
-    span.textContent = name;
-    tagBox.appendChild(span);
-  });
+  if(tagBox){
+    tagBox.innerHTML = "";
+    topCourses.forEach(([name])=>{
+      const span = document.createElement("span");
+      span.className = "tag";
+      span.textContent = name;
+      tagBox.appendChild(span);
+    });
+  }
 
   const courseBox = document.getElementById("courseGrid");
   courseBox.innerHTML = "";
