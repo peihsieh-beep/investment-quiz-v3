@@ -1062,6 +1062,140 @@ h1,
   }
 }
 
+
+/* Compact result page layout */
+.result-main-grid{
+  display:grid;
+  grid-template-columns:minmax(220px, 300px) minmax(0, 1fr);
+  align-items:center;
+  gap:24px;
+  width:min(100%, 720px);
+  margin:0 auto 24px;
+}
+
+.result-main-grid .result-tarot-wrap{
+  margin:0;
+}
+
+.result-main-grid .result-tarot-image{
+  width:100%;
+  max-width:280px;
+}
+
+.result-main-grid .result-solution-section{
+  width:100%;
+  margin:0;
+  padding:24px 26px;
+  align-self:stretch;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.result-main-grid .result-solution-list{
+  width:100%;
+  margin:0;
+}
+
+/* Horizontal recommendation cards */
+#resultScreen .course-grid{
+  grid-template-columns:1fr;
+  gap:14px;
+}
+
+#resultScreen .course-card{
+  display:grid;
+  grid-template-columns:190px minmax(0, 1fr);
+  align-items:stretch;
+  min-height:190px;
+}
+
+#resultScreen .course-cover{
+  width:100%;
+  height:100%;
+  min-height:190px;
+  aspect-ratio:auto;
+  margin:0;
+  border-radius:0;
+  object-fit:cover;
+}
+
+#resultScreen .course-body{
+  min-height:0;
+  padding:20px 22px;
+}
+
+#resultScreen .course-title{
+  font-size:18px;
+  -webkit-line-clamp:2;
+}
+
+#resultScreen .course-desc{
+  -webkit-line-clamp:3;
+}
+
+#resultScreen .course-link{
+  width:fit-content;
+  min-width:140px;
+  padding:10px 18px;
+}
+
+@media (max-width:700px){
+  .result-main-grid{
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+
+  .result-main-grid .result-tarot-image{
+    width:min(100%, 240px);
+  }
+
+  #resultScreen .course-card{
+    grid-template-columns:120px minmax(0, 1fr);
+    min-height:150px;
+  }
+
+  #resultScreen .course-cover{
+    min-height:150px;
+  }
+
+  #resultScreen .course-body{
+    padding:16px;
+  }
+
+  #resultScreen .course-title{
+    font-size:16px;
+  }
+
+  #resultScreen .course-desc{
+    -webkit-line-clamp:2;
+  }
+}
+
+@media (max-width:480px){
+  #resultScreen .course-card{
+    grid-template-columns:105px minmax(0, 1fr);
+  }
+
+  #resultScreen .course-cover{
+    min-height:145px;
+  }
+
+  #resultScreen .course-categories{
+    margin-bottom:7px;
+  }
+
+  #resultScreen .course-category{
+    font-size:11px;
+    padding:4px 7px;
+  }
+
+  #resultScreen .course-link{
+    width:100%;
+    min-width:0;
+  }
+}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
@@ -1111,20 +1245,22 @@ h1,
   <h2 id="resultTitle"></h2>
   <p id="resultDesc" class="result-desc"></p>
 
-  <div class="result-tarot-wrap">
-    <img
-      id="resultTarotImage"
-      class="result-tarot-image"
-      src=""
-      alt="投資人格鑑定結果"
-      draggable="false"
-      oncontextmenu="return false;"
-    >
-  </div>
+  <div class="result-main-grid">
+    <div class="result-tarot-wrap">
+      <img
+        id="resultTarotImage"
+        class="result-tarot-image"
+        src=""
+        alt="投資人格鑑定結果"
+        draggable="false"
+        oncontextmenu="return false;"
+      >
+    </div>
 
-  <div class="result-solution-section">
-    <h3>你的解方</h3>
-    <ul id="resultSolutionList" class="result-solution-list"></ul>
+    <div class="result-solution-section">
+      <h3>你的解方</h3>
+      <ul id="resultSolutionList" class="result-solution-list"></ul>
+    </div>
   </div>
 
   
@@ -1139,13 +1275,7 @@ h1,
       <span class="gift-coupon-title">訂閱 9 折券</span>
     </button>
   </div>
-
-  <div class="section">
-    <h3>你可能比較缺這幾塊</h3>
-    <div id="courseTags" class="tags"></div>
-  </div>
-
-  <div class="section">
+<div class="section">
     <div class="recommend-title">
       <h3>鑑定結果顯示還有救，可以先看看這些專欄</h3>
       <span>投資達人任你選</span>
@@ -2386,10 +2516,14 @@ document.addEventListener("contextmenu", event => {
 <script>
 (function () {
   function reportHeight() {
-    window.parent.postMessage({ type: 'setHeight', height: document.body.scrollHeight }, '*');
+    var el = document.querySelector('.wrap');
+    if (!el) return;
+    window.parent.postMessage({ type: 'setHeight', height: el.scrollHeight }, '*');
   }
+  var target = document.querySelector('.wrap');
+  if (!target) return;
   var ro = new ResizeObserver(reportHeight);
-  ro.observe(document.body);
+  ro.observe(target);
   reportHeight();
 })();
 </script>
